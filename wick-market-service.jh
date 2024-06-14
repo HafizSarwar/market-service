@@ -1,0 +1,43 @@
+entity Stock {
+  symbol String required,
+  name String
+}
+
+entity UserStock {
+  userId Long required,
+  stockSymbol String required,
+  followDate Instant
+}
+
+entity StockPrice {
+  stockSymbol String required,
+  date Instant required,
+  price BigDecimal required
+}
+
+entity StockVote {
+  userId Long required,
+  stockSymbol String required,
+  voteType VoteType required
+}
+
+enum VoteType {
+  UPVOTE,
+  DOWNVOTE
+}
+
+relationship ManyToOne {
+  UserStock{stock(symbol)} to Stock
+}
+
+relationship ManyToOne {
+  StockPrice{stock(symbol)} to Stock
+}
+
+relationship ManyToOne {
+  StockVote{stock(symbol)} to Stock
+}
+
+service Stock, UserStock, StockPrice, StockVote with serviceClass
+dto Stock, UserStock, StockPrice, StockVote with mapstruct
+paginate Stock, UserStock, StockPrice, StockVote with pagination
